@@ -4,6 +4,35 @@ tasks:
     fn: com.gs.datastore
     args:
       datasource: postgres
-      data: <% inputs.body %>
+      params: 
+      data:
+        where:
+          location:
+            contains: <% inputs.query.city %>
+            mode: 'insensitive'
+        select:
+          id: true
+          name: true
+          description: true
+          location: true
+          since: true
+          isOpen: true
+          opsStartTime: true
+          opsEndTime: true
+          menuItems:
+             select:
+                name: true
+                description: true
+                price: true
+                couponCode: true
       config:
+        url: /postgre/restaurant/search
         method: Restaurant.findMany
+    on_error:
+      continue: false 
+      responses: 
+        code: 500
+        success: false
+        data: 'Something went wrong. Unable to find restaurants, please try again after sometime.'
+  
+  

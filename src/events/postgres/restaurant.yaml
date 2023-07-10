@@ -75,11 +75,15 @@
   summary: Fetch multiple Restaurant
   description: Fetch multiple Restaurant from database
   fn: com.biz.postgres.restaurant.search
-  body:
-    content:
-      application/json:
-        schema:
-          type: object
+  params:
+    - name: city
+      in: query
+      schema:
+        type: string
+    - name: couponCode
+      in: query
+      schema:
+        type: string
   responses:
     content:
       application/json:

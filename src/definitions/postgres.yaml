@@ -91,3 +91,10 @@ OrderItem:
       type: integer
     orderId:
       type: integer
+RestaurantSearch:
+  type: object
+  properties:
+    location:
+      type: string
+    couponCode:
+      type: string
