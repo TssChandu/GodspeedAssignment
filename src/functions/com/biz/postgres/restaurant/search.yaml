@@ -48,3 +48,4 @@ tasks:
         code: 500
         success: false
         data: 'Something went wrong. Unable to find restaurants, please try again after sometime.'    
+
