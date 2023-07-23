@@ -1,4 +1,4 @@
-summary: Fetch many Restaurant
+summary: Update Restaurant
 tasks:
   - id: if
     fn: com.gs.if
@@ -48,4 +48,3 @@ tasks:
         code: 500
         success: false
         data: 'Something went wrong. Unable to find restaurants, please try again after sometime.'    
-
