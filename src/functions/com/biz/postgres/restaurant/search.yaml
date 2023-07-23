@@ -1,4 +1,4 @@
-summary: Update Restaurant
+summary: Search Many Restaurants
 tasks:
   - id: postgres_restaurant_search
     fn: com.gs.datastore
@@ -17,4 +17,4 @@ tasks:
             menuItems: true
           }%>
       config:
-        method: Restaurant.update
+        method: Restaurant.findMany
