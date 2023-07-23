@@ -1,20 +1,50 @@
 summary: Update Restaurant
 tasks:
-  - id: postgres_restaurant_search
-    fn: com.gs.datastore
-    args:
-      datasource: postgres
-      data:
-        where:
-          location: <% inputs.query.city %>
-        include: |
-          <% if inputs.query.couponCode then {
-            menuItems:
-              where:
-                couponCode:
-                  equals: <% inputs.query.couponCode %>
-          } else {
-            menuItems: true
-          }%>
-      config:
-        method: Restaurant.update
+  - id: if
+    fn: com.gs.if
+    condition: <% inputs.query.couponCode == undefined %>
+    tasks:
+      - id: step1
+        description: Searching Restuarants by applying city filter along with Menu items without filtering couponCode
+        fn: com.gs.datastore
+        args:
+          datasource: postgres
+          params: 
+          data:
+            where:
+              location: 
+                contains: <% inputs.query.city %>
+                mode: 'insensitive'
+            include:
+              menuItems: true
+          config:
+            method: Restaurant.findMany
+
+  - id: elif
+    fn: com.gs.elif
+    condition: <% inputs.query.couponCode %>
+    tasks:
+      - id: step2
+        description: Searching Restuarants by applying city filter along with filtering couponCode
+        fn: com.gs.datastore
+        args:
+          datasource: postgres
+          params: 
+          data:
+            where:
+              location: 
+                contains: <% inputs.query.city %>
+                mode: 'insensitive'
+            include:
+              menuItems:
+                where:
+                  couponCode:
+                    has : <% inputs.query.couponCode %>
+          config:
+            method: Restaurant.findMany
+    on_error:
+      continue: false 
+      responses: 
+        code: 500
+        success: false
+        data: 'Something went wrong. Unable to find restaurants, please try again after sometime.'    
